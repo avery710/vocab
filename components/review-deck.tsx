@@ -62,14 +62,14 @@ export function ReviewDeck({ words }: { words: Word[] }) {
             </button>
           ))}
         </div>
-        <span className="tabular-nums">
+        <span className="font-mono tabular-nums">
           {Math.min(i + 1, words.length)} / {words.length}
         </span>
       </div>
 
       {done ? (
         <div className="mt-6 rounded-3xl border border-rule bg-sheet p-10 text-center">
-          <p className="font-serif text-[28px] font-semibold">That’s the set.</p>
+          <p className="text-[28px] font-bold tracking-[-0.02em]">That’s the set.</p>
           <button
             type="button"
             onClick={() => {
@@ -87,7 +87,7 @@ export function ReviewDeck({ words }: { words: Word[] }) {
           <div className="flex-1">
             {dir === "en" || shown ? (
               <div className="flex flex-wrap items-center gap-3">
-                <h2 className="font-serif text-[clamp(36px,8vw,56px)] leading-tight font-semibold">
+                <h2 className="text-[clamp(36px,8vw,56px)] leading-tight font-bold tracking-[-0.02em]">
                   <span className={shown ? "marked marked-draw" : ""}>{w.term}</span>
                 </h2>
                 <SpeakButton text={w.term} />
@@ -97,13 +97,14 @@ export function ReviewDeck({ words }: { words: Word[] }) {
 
             {shown && (
               <div className="mt-5 grid gap-3">
-                <p className="text-[15px] text-pencil">
-                  {[w.partOfSpeech, w.pronunciation].filter(Boolean).join("   ")}
+                <p className="flex flex-wrap gap-x-3 text-[15px] text-pencil">
+                  {w.partOfSpeech && <span>{w.partOfSpeech}</span>}
+                  {w.pronunciation && <span className="ipa">{w.pronunciation}</span>}
                 </p>
                 {w.chineseDefinition && <p className="zh text-[19px]">{senses(w.chineseDefinition).join("；")}</p>}
-                {w.definition && <p className="font-serif text-[17px] text-ink/80">{senses(w.definition).join("; ")}</p>}
+                {w.definition && <p className="text-[17px] text-ink/80">{w.definition}</p>}
                 {w.example && (
-                  <p className="mt-2 border-l-[3px] border-marker pl-3 font-serif text-[17px] italic">{w.example}</p>
+                  <p className="mt-2 border-l-[3px] border-marker pl-3 text-[17px]">{w.example}</p>
                 )}
                 <Link href={wordPath(w.term)} className="mt-1 text-[14px] text-pencil underline decoration-rule underline-offset-4 hover:text-ink">
                   Open entry

@@ -11,7 +11,7 @@ export default async function NewWordPage({ searchParams }: { searchParams: Prom
     <>
       <TopBar />
       <main className="mx-auto w-full max-w-3xl px-5 pb-24 sm:px-8 [&>*]:max-w-2xl">
-        <h1 className="mt-8 font-serif text-[34px] font-semibold">Add a word</h1>
+        <h1 className="mt-8 text-[34px] font-bold tracking-[-0.02em]">Add a word</h1>
         <WordForm
           action={createWordAction}
           submitLabel="Save word"

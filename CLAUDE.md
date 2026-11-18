@@ -24,7 +24,9 @@ Capy's personal English vocabulary notebook (EN ↔ 繁體中文). Replaced the 
   `termSchema`). The Notion import is exempt so old entries come over as they were.
 - Definitions: one sense per line. Imported Notion entries join senses with "；" or
   "; "; `lib/format.ts#senses` splits both.
-- Look: navy ink on cool paper, Newsreader for headwords, Schibsted Grotesk + Noto
-  Sans TC for text. The one bold element is the marker-yellow highlighter on
+- Look: navy ink on cool paper. Type matches Surflog: Funnel Sans for all text
+  (headwords 700, −0.02em, like Surflog's spot titles), IBM Plex Mono for figures
+  (the word count, the review counter). Self-hosted via @fontsource, not
+  next/font/google. Chinese falls back to the system font, as in Surflog. The one bold element is the marker-yellow highlighter on
   headwords and the active A–Z tab. Keep everything else quiet.
 - Tests hit a real Postgres (`npm test`); keep the OAuth → MCP end-to-end test green.

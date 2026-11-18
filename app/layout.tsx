@@ -1,5 +1,15 @@
 import type { Metadata, Viewport } from "next";
+import "@fontsource-variable/funnel-sans";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/ibm-plex-mono/600.css";
 import "./globals.css";
+
+// Same fonts as Surflog: Funnel Sans (variable 300–800) for everything you
+// read, IBM Plex Mono for figures. Self-hosted from npm (@fontsource) instead
+// of next/font/google, so builds don't depend on reaching Google Fonts.
+// Neither has CJK glyphs; Chinese falls back to the system font per glyph,
+// as in Surflog.
 
 export const metadata: Metadata = {
   title: { default: "Vocab", template: "%s · Vocab" },
@@ -12,14 +22,6 @@ export const viewport: Viewport = { themeColor: "#f3f5f2" };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-Hant">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Schibsted+Grotesk:wght@400..700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans:wght@400&display=swap"
-        />
-      </head>
       <body>{children}</body>
     </html>
   );

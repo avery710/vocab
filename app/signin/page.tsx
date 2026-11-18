@@ -7,7 +7,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
   return (
     <main className="flex min-h-dvh items-center justify-center px-5">
       <div className="w-full max-w-sm">
-        <p className="font-serif text-[64px] leading-none font-semibold tracking-tight">
+        <p className="text-[64px] leading-none font-bold tracking-[-0.02em]">
           <span className="marked">vocab</span>
         </p>
         <p className="mt-4 text-[15.5px] text-pencil">My English notebook. Sign in to open it.</p>

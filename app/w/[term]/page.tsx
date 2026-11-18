@@ -39,11 +39,11 @@ export default async function WordPage({ params }: Props) {
         </div>
 
         <article className="mt-8">
-          <h1 className="font-serif text-[clamp(44px,9vw,76px)] leading-[1.02] font-semibold tracking-tight break-words">
+          <h1 className="text-[clamp(44px,9vw,76px)] leading-[1.02] font-bold tracking-[-0.02em] break-words">
             <span className="marked marked-draw">{w.term}</span>
           </h1>
           <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-            {w.partOfSpeech && <span className="font-serif text-[19px] text-pencil italic">{w.partOfSpeech}</span>}
+            {w.partOfSpeech && <span className="text-[19px] text-pencil">{w.partOfSpeech}</span>}
             {w.pronunciation && <span className="ipa text-[18px] text-ink/80">{w.pronunciation}</span>}
             <SpeakButton text={w.term} />
           </div>
@@ -56,13 +56,13 @@ export default async function WordPage({ params }: Props) {
             )}
             {en.length > 0 && (
               <Section title="English">
-                <Senses items={en} className="font-serif text-[19px] leading-relaxed" />
+                <Senses items={en} className="text-[19px] leading-relaxed" />
               </Section>
             )}
             {(w.example || w.exampleZh) && (
               <Section title="例句">
                 <figure className="border-l-[3px] border-marker pl-4">
-                  {w.example && <p className="font-serif text-[19px] leading-relaxed italic">{w.example}</p>}
+                  {w.example && <p className="text-[19px] leading-relaxed">{w.example}</p>}
                   {w.exampleZh && <p className="zh mt-1 text-[15.5px] text-pencil">{w.exampleZh}</p>}
                 </figure>
               </Section>
@@ -87,7 +87,7 @@ export default async function WordPage({ params }: Props) {
                     <Link
                       key={r.id}
                       href={wordPath(r.term)}
-                      className="rounded-full border border-rule bg-sheet px-3 py-1 font-serif text-[16px] hover:border-ink"
+                      className="rounded-full border border-rule bg-sheet px-3 py-1 text-[16px] hover:border-ink"
                     >
                       {r.term}
                     </Link>

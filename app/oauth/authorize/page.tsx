@@ -55,7 +55,7 @@ export default async function AuthorizePage({ searchParams }: { searchParams: Pr
   return (
     <main className="flex min-h-dvh items-center justify-center px-5 py-10">
       <div className="w-full max-w-md rounded-3xl border border-rule bg-sheet p-8">
-        <p className="font-serif text-[30px] leading-none font-semibold">
+        <p className="text-[30px] leading-none font-bold tracking-[-0.02em]">
           <span className="marked">vocab</span>
         </p>
         {!req ? (

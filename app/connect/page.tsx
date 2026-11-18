@@ -26,7 +26,7 @@ export default async function ConnectPage() {
     <>
       <TopBar current="/connect" />
       <main className="mx-auto w-full max-w-3xl px-5 pb-24 sm:px-8 [&>*]:max-w-2xl">
-        <h1 className="mt-8 font-serif text-[34px] font-semibold">Connect AI</h1>
+        <h1 className="mt-8 text-[34px] font-bold tracking-[-0.02em]">Connect AI</h1>
         <p className="mt-2 max-w-prose text-[15.5px] text-pencil">
           Add your notebook to Claude as a connector. Then send Claude a word from any chat, on your phone or computer, and it
           will look it up and save it here.

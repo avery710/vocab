@@ -2,6 +2,7 @@
 
 /*
  * Vocab — a personal bilingual word notebook.
+ * Type follows Surflog (Funnel Sans + IBM Plex Mono).
  * One bold thing: the highlighter. Headwords get a marker-yellow swipe the way
  * you'd mark a new word in a textbook, and the active thumb-index letter is a
  * yellow tab. Everything else is navy ink on cool paper, kept quiet.
@@ -17,9 +18,10 @@
   --color-marker-soft: #fff3b0;
   --color-danger: #b4372b;
 
-  --font-sans: "Schibsted Grotesk", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Newsreader", "Noto Serif TC", ui-serif, Georgia, serif;
-  --font-ipa: "Noto Sans", "Charis SIL", "Doulos SIL", "Lucida Sans Unicode", sans-serif;
+  /* Surflog's type: Funnel Sans for UI and text, IBM Plex Mono for figures.
+     Chinese falls back to the system font per glyph (PingFang TC on Apple). */
+  --font-sans: "Funnel Sans Variable", "Funnel Sans", ui-sans-serif, system-ui, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 html {
@@ -64,8 +66,9 @@ a:hover .hover-mark {
   margin: 0 -0.12em;
 }
 
+/* IPA stays in Funnel Sans: its latin-ext subset covers the IPA block
+   (æ ə ɪ ʊ ˈ ː). */
 .ipa {
-  font-family: var(--font-ipa);
   letter-spacing: 0.01em;
 }
 

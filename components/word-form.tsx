@@ -45,7 +45,7 @@ export function WordForm({
           autoCapitalize="none"
           autoComplete="off"
           spellCheck={false}
-          className="field font-serif !text-[24px] font-semibold"
+          className="field !text-[24px] font-bold tracking-[-0.02em]"
         />
       </Field>
 

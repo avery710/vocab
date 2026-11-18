@@ -44,7 +44,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
               "Your notebook is empty."
             ) : (
               <>
-                <span className="font-serif text-[22px] font-semibold text-ink tabular-nums">{stats.total}</span> words and phrases
+                <span className="font-mono text-[22px] font-semibold tracking-[-0.02em] text-ink tabular-nums">{stats.total}</span> words and phrases
               </>
             )}
           </p>
@@ -71,8 +71,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
                 key={l}
                 href={active ? href(p, { letter: undefined }) : href({ ...p, q: undefined }, { letter: l })}
                 aria-current={active ? "true" : undefined}
-                className={`flex h-8 min-w-7 shrink-0 items-center justify-center rounded-md px-1 font-serif text-[16px] transition-colors sm:min-w-6 ${
-                  active ? "bg-marker font-semibold text-ink" : "text-pencil hover:bg-rule/70 hover:text-ink"
+                className={`flex h-8 min-w-7 shrink-0 items-center justify-center rounded-md px-1 text-[16px] transition-colors sm:min-w-6 ${
+                  active ? "bg-marker font-bold tracking-[-0.02em] text-ink" : "text-pencil hover:bg-rule/70 hover:text-ink"
                 }`}
               >
                 {l === "#" ? "#" : l.toUpperCase()}
@@ -139,11 +139,11 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
                   <Link href={wordPath(w.term)} className="group -mx-3 flex gap-4 rounded-xl px-3 py-3.5 transition-colors hover:bg-sheet">
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-baseline gap-x-2.5">
-                        <span className="font-serif text-[21px] leading-tight font-semibold">
+                        <span className="text-[21px] leading-tight font-bold tracking-[-0.02em]">
                           <span className="hover-mark">{w.term}</span>
                         </span>
                         {w.partOfSpeech && POS_SHORT[w.partOfSpeech] && (
-                          <span className="font-serif text-[15px] text-pencil italic">{POS_SHORT[w.partOfSpeech]}</span>
+                          <span className="text-[15px] text-pencil">{POS_SHORT[w.partOfSpeech]}</span>
                         )}
                         {w.pronunciation && <span className="ipa text-[14px] text-faint">{w.pronunciation}</span>}
                       </div>
@@ -201,7 +201,7 @@ function Chip({ href, active, children }: { href: string; active: boolean; child
 function EmptyState() {
   return (
     <div className="mt-10 rounded-2xl border border-dashed border-rule p-8">
-      <p className="font-serif text-[22px] font-semibold">Start with one word.</p>
+      <p className="text-[22px] font-bold tracking-[-0.02em]">Start with one word.</p>
       <p className="mt-2 max-w-prose text-[15px] text-pencil">
         Add it here, or connect Claude and just send it a word — it will look it up and save it for you.
       </p>
