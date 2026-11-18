@@ -27,6 +27,6 @@ Capy's personal English vocabulary notebook (EN ↔ 繁體中文). Replaced the 
 - Look: navy ink on cool paper. Type matches Surflog: Funnel Sans for all text
   (headwords 700, −0.02em, like Surflog's spot titles), IBM Plex Mono for figures
   (the word count, the review counter). Self-hosted via @fontsource, not
-  next/font/google. Chinese falls back to the system font, as in Surflog. The one bold element is the marker-yellow highlighter on
+  next/font/google. Chinese falls back to the system font, as in Surflog. The one bold element is the neon-green highlighter (#39ff14) on
   headwords and the active A–Z tab. Keep everything else quiet.
 - Tests hit a real Postgres (`npm test`); keep the OAuth → MCP end-to-end test green.

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#18263a"/>
-  <rect x="12" y="36" width="40" height="10" rx="3" fill="#ffe45c" transform="rotate(-3 32 41)"/>
+  <rect x="12" y="36" width="40" height="10" rx="3" fill="#39ff14" transform="rotate(-3 32 41)"/>
   <text x="32" y="44" text-anchor="middle" font-family="Georgia, serif" font-size="34" font-weight="700" fill="#fbfcfa">v</text>
 </svg>

@@ -3,9 +3,9 @@
 /*
  * Vocab — a personal bilingual word notebook.
  * Type follows Surflog (Funnel Sans + IBM Plex Mono).
- * One bold thing: the highlighter. Headwords get a marker-yellow swipe the way
+ * One bold thing: the highlighter. Headwords get a neon-green swipe the way
  * you'd mark a new word in a textbook, and the active thumb-index letter is a
- * yellow tab. Everything else is navy ink on cool paper, kept quiet.
+ * green tab. Everything else is navy ink on cool paper, kept quiet.
  */
 @theme {
   --color-paper: #f3f5f2;
@@ -14,8 +14,8 @@
   --color-pencil: #5b6b7f;
   --color-faint: #8a97a6;
   --color-rule: #dce1da;
-  --color-marker: #ffe45c;
-  --color-marker-soft: #fff3b0;
+  --color-marker: #39ff14;
+  --color-marker-soft: #d4ffcb;
   --color-danger: #b4372b;
 
   /* Surflog's type: Funnel Sans for UI and text, IBM Plex Mono for figures.
