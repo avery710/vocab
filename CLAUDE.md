@@ -4,6 +4,11 @@ Capy's personal English vocabulary notebook (EN ↔ 繁體中文). Replaced the 
 "English Dictionary" database in Nov 2026. Single user: Google sign-in limited to
 `OWNER_EMAIL`; no owner column anywhere.
 
+## Status
+
+Not deployed yet. **Read `HANDOFF.md` first**: it lists what's verified and the
+next steps (push, Neon, Google OAuth, Vercel, Notion import, connect Claude).
+
 ## Layout
 
 - `db/schema.sql`: the whole schema, idempotent (`npm run db:migrate`).
