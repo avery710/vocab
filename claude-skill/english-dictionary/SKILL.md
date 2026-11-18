@@ -1,8 +1,17 @@
 ---
-name: "english-dictionary"
-description: "Look up an English word or phrase and save it to Avery's personal Vocab dictionary (capy-vocab.vercel.app) through the Vocab connector. Use this skill whenever the user sends a bare English word or phrase with no other instruction, or says things like \"add X to my dictionary\", \"record this word\", \"what does X mean\", \"save this phrase\", or pastes a sentence and asks about an unfamiliar word in it. Also use it when the user asks to compare two similar words, or to review, quiz, search, or list words they've already collected. Trigger even when Vocab is not mentioned by name — this is the user's standing vocabulary workflow, so any incoming English word is presumed to be a dictionary candidate unless the context clearly says otherwise."
+name: english-dictionary
+description: >-
+  Look up an English word or phrase and save it to Avery's personal Vocab
+  dictionary (capy-vocab.vercel.app) through the Vocab connector. Use this skill
+  whenever the user sends a bare English word or phrase with no other
+  instruction, or says things like "add X to my dictionary", "record this word",
+  "what does X mean", "save this phrase", or pastes a sentence and asks about an
+  unfamiliar word in it. Also use it when the user asks to compare two similar
+  words, or to review, quiz, search, or list words they've already collected.
+  Trigger even when Vocab is not mentioned by name — this is the user's standing
+  vocabulary workflow, so any incoming English word is presumed to be a
+  dictionary candidate unless the context clearly says otherwise.
 ---
-
 # English dictionary (Vocab)
 
 Avery keeps a personal English ↔ 繁體中文 dictionary in Vocab, a small site with an MCP connector. It replaced the old Notion "English Dictionary" in November 2026; all 289 Notion entries were imported. Words arrive through chat, usually while Avery is reading something; this skill turns each one into a properly filled entry.
@@ -36,13 +45,13 @@ Chinese is **traditional characters** (繁體中文, Taiwan usage). Worth a glan
 
 Call `get_word` for each incoming word before looking anything up. If it misses, a quick `search_words` on the stem catches inflections ("defiance" should surface "defiant").
 
-If a word is already saved, don't write it again. Say when it was added (`dateAdded`), show the existing Chinese definition and example, link its `url`, and offer to add another example or sense rather than duplicating it.
+If a word is already saved, don't write it again. Say when it was added (`dateAdded`), show the existing Chinese definition and example, link its `url`, and offer to add another example or sense rather than duplicating it. If the saved entry has a sense with no matching example, offer to add the missing one.
 
 A homophone or near-synonym is *not* a duplicate. discreet and discrete are separate entries that link to each other; say so and save the new one.
 
 ## Step 1 — write the entry
 
-**Choose the example yourself.** Don't offer a menu of sentences; at the pace words arrive that becomes the bottleneck. Avery can always ask for a different one afterwards.
+**Choose the examples yourself.** Don't offer a menu of sentences; at the pace words arrive that becomes the bottleneck. Avery can always ask for a different one afterwards.
 
 If Avery asks for a sentence built around a specific collocation, use that one. If the collocation is unusual or reads as literary rather than everyday (*moral disease*, *unstrenuous*), say so plainly and suggest what a native speaker would more likely say — then still save what was asked for.
 
@@ -57,17 +66,17 @@ Fill these fields on `add_word`:
 | `partOfSpeech` | noun, verb, adjective, adverb, phrase, idiom, other |
 | `chineseDefinition` | traditional Chinese, **one sense per line** |
 | `definition` | English, **one sense per line**, in the same order as the Chinese |
-| `example` | one natural sentence for the main sense |
+| `example` | one natural sentence for the **first** sense |
 | `exampleZh` | its traditional Chinese translation |
-| `note` | 筆記, in Chinese, **one point per line** (each line shows as a bullet) |
+| `note` | 筆記, in Chinese, **one point per line** (each line shows as a bullet); starts with the example lines for any further senses |
 | `tags` | optional; prefer the existing ones: business, casual, academic, slang |
 | `related` | terms already in the dictionary to link (see Step 2) |
 
 Leave `dateAdded` out; it defaults to today in Taiwan.
 
-**More than one sense.** Vocab has one example field. Put the main sense's sentence there, and when the other senses genuinely differ, add one note line per extra sense in the form `例（第二義）：English sentence — 中文翻譯`. Examples that show how senses differ beat several sentences restating one use.
+**Every sense gets its own example.** Each definition line must have a matching example sentence with its Chinese translation; an entry with a sense that has no example is incomplete. Vocab has only one example field, so the first sense's sentence goes in `example` / `exampleZh`, and each further sense gets its own line at the top of the note, in the same order as the definitions: `例（第二義）：English sentence — 中文翻譯`, then `例（第三義）：…`, and so on. Each sentence should make its own sense unmistakable rather than restate another sense's use. If you can't write a natural example for a sense, that sense is probably too marginal to list; drop it rather than leave it without an example.
 
-**The note** is the thing a dictionary wouldn't say but a teacher would: confusable neighbours, the word family and where the stress moves, register and connotation, etymology when it genuinely illuminates meaning, and how the word differs from the near-synonym Avery would otherwise reach for. Flag words that have become offensive or dated (*handicapped*, *spinster*). Skip the note entirely rather than padding it.
+**The note** is the thing a dictionary wouldn't say but a teacher would: confusable neighbours, the word family and where the stress moves, register and connotation, etymology when it genuinely illuminates meaning, and how the word differs from the near-synonym Avery would otherwise reach for. Flag words that have become offensive or dated (*handicapped*, *spinster*). Apart from the per-sense example lines, skip the note rather than padding it.
 
 ### When a word is ambiguous
 
