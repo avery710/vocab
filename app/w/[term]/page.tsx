@@ -5,7 +5,7 @@ import { deleteWordAction } from "@/app/actions";
 import { ConfirmDelete } from "@/components/confirm-delete";
 import { SpeakButton } from "@/components/speak-button";
 import { TopBar } from "@/components/top-bar";
-import { notePoints, safeDecode, senses, shortDate, wordPath } from "@/lib/format";
+import { examples, notePoints, safeDecode, senses, shortDate, wordPath } from "@/lib/format";
 import { getWordByTerm } from "@/lib/words";
 
 export const dynamic = "force-dynamic";
@@ -23,6 +23,7 @@ export default async function WordPage({ params }: Props) {
 
   const zh = senses(w.chineseDefinition);
   const en = senses(w.definition);
+  const ex = examples(w.example, w.exampleZh);
   const notes = notePoints(w.note);
 
   return (
@@ -59,25 +60,30 @@ export default async function WordPage({ params }: Props) {
                 <Senses items={en} className="text-[19px] leading-relaxed" />
               </Section>
             )}
-            {(w.example || w.exampleZh) && (
+            {ex.length > 0 && (
               <Section title="例句">
-                <figure className="border-l-[3px] border-marker pl-4">
-                  {w.example && <p className="text-[19px] leading-relaxed">{w.example}</p>}
-                  {w.exampleZh && <p className="zh mt-1 text-[15.5px] text-pencil">{w.exampleZh}</p>}
-                </figure>
+                <ol className="grid gap-4">
+                  {ex.map((e, i) => (
+                    <li key={i} className="flex gap-3">
+                      {ex.length > 1 && (
+                        <span className="w-4 shrink-0 pt-[0.3em] text-right text-[14px] text-faint tabular-nums">{i + 1}</span>
+                      )}
+                      <figure className="border-l-[3px] border-marker pl-4">
+                        {e.en && <p className="text-[19px] leading-relaxed">{e.en}</p>}
+                        {e.zh && <p className="zh mt-1 text-[15.5px] text-pencil">{e.zh}</p>}
+                      </figure>
+                    </li>
+                  ))}
+                </ol>
               </Section>
             )}
             {notes.length > 0 && (
               <Section title="筆記">
-                {notes.length === 1 ? (
-                  <p className="zh max-w-[68ch] text-[15.5px]">{notes[0]}</p>
-                ) : (
-                  <ul className="zh grid max-w-[68ch] list-disc gap-1.5 pl-5 text-[15.5px] marker:text-faint">
-                    {notes.map((n, i) => (
-                      <li key={i}>{n}</li>
-                    ))}
-                  </ul>
-                )}
+                <div className="zh grid max-w-[68ch] gap-1.5 text-[15.5px]">
+                  {notes.map((n, i) => (
+                    <p key={i}>{n}</p>
+                  ))}
+                </div>
               </Section>
             )}
             {w.related.length > 0 && (

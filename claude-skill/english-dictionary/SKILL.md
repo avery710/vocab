@@ -66,17 +66,19 @@ Fill these fields on `add_word`:
 | `partOfSpeech` | noun, verb, adjective, adverb, phrase, idiom, other |
 | `chineseDefinition` | traditional Chinese, **one sense per line** |
 | `definition` | English, **one sense per line**, in the same order as the Chinese |
-| `example` | one natural sentence for the **first** sense |
-| `exampleZh` | its traditional Chinese translation |
-| `note` | 筆記, in Chinese, **one point per line** (each line shows as a bullet); starts with the example lines for any further senses |
+| `example` | natural sentences, **one per sense, one per line**, in the same order as the definitions |
+| `exampleZh` | their traditional Chinese translations, one per line, same order |
+| `note` | 筆記, in Chinese, **one point per line** (each line shows on its own line) |
 | `tags` | optional; prefer the existing ones: business, casual, academic, slang |
 | `related` | terms already in the dictionary to link (see Step 2) |
 
 Leave `dateAdded` out; it defaults to today in Taiwan.
 
-**Every sense gets its own example.** Each definition line must have a matching example sentence with its Chinese translation; an entry with a sense that has no example is incomplete. Vocab has only one example field, so the first sense's sentence goes in `example` / `exampleZh`, and each further sense gets its own line at the top of the note, in the same order as the definitions: `例（第二義）：English sentence — 中文翻譯`, then `例（第三義）：…`, and so on. Each sentence should make its own sense unmistakable rather than restate another sense's use. If you can't write a natural example for a sense, that sense is probably too marginal to list; drop it rather than leave it without an example.
+**Every sense gets its own example.** Each definition line must have a matching example sentence with its Chinese translation; an entry with a sense that has no example is incomplete. Line *n* of `example` and line *n* of `exampleZh` belong to sense *n*, so the three fields always have the same number of lines; the site numbers them to match. Each sentence should make its own sense unmistakable rather than restate another sense's use. If you can't write a natural example for a sense, that sense is probably too marginal to list; drop it rather than leave it without an example.
 
-**The note** is the thing a dictionary wouldn't say but a teacher would: confusable neighbours, the word family and where the stress moves, register and connotation, etymology when it genuinely illuminates meaning, and how the word differs from the near-synonym Avery would otherwise reach for. Flag words that have become offensive or dated (*handicapped*, *spinster*). Apart from the per-sense example lines, skip the note rather than padding it.
+**The note** is the thing a dictionary wouldn't say but a teacher would: confusable neighbours, the word family and where the stress moves, register and connotation, etymology when it genuinely illuminates meaning, and how the word differs from the near-synonym Avery would otherwise reach for. Flag words that have become offensive or dated (*handicapped*, *spinster*). Skip the note rather than padding it.
+
+Write the note as **one point per line**, never as a paragraph: the site shows each point on its own line. One idea per line (a collocation list, the word family, a `vs` comparison, the `口訣`), no leading `-` or `•`.
 
 ### When a word is ambiguous
 

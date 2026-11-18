@@ -41,6 +41,12 @@ and the address in `claude-skill/english-dictionary/SKILL.md`.
   `termSchema`). The Notion import is exempt so old entries come over as they were.
 - Definitions: one sense per line. Imported Notion entries join senses with "；" or
   "; "; `lib/format.ts#senses` splits both.
+- Examples: one per sense, one per line, in definition order; line *n* of
+  `example_zh` translates line *n* of `example` (`lib/format.ts#examples`). The
+  word page numbers them when there are several.
+- Notes: one point per line, each shown on its own line (no bullet markers).
+  Imported Notion notes are one paragraph; `notePoints` splits those after each
+  。！？ outside brackets and quotes, on display only (stored text unchanged).
 - Look: navy ink on light grey (#f5f5f6) with white cards and fields. Type matches Surflog: Funnel Sans for all text
   (headwords 700, −0.02em, like Surflog's spot titles), IBM Plex Mono for figures
   (the word count, the review counter). Self-hosted via @fontsource, not

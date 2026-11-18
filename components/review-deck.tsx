@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { senses, wordPath } from "@/lib/format";
+import { examples, senses, wordPath } from "@/lib/format";
 import type { Word } from "@/lib/words";
 import { SpeakButton } from "./speak-button";
 
@@ -103,9 +103,9 @@ export function ReviewDeck({ words }: { words: Word[] }) {
                 </p>
                 {w.chineseDefinition && <p className="zh text-[19px]">{senses(w.chineseDefinition).join("；")}</p>}
                 {w.definition && <p className="text-[17px] text-ink/80">{w.definition}</p>}
-                {w.example && (
-                  <p className="mt-2 border-l-[3px] border-marker pl-3 text-[17px]">{w.example}</p>
-                )}
+                {examples(w.example, "").map((e, i) => (
+                  <p key={i} className="mt-2 border-l-[3px] border-marker pl-3 text-[17px]">{e.en}</p>
+                ))}
                 <Link href={wordPath(w.term)} className="mt-1 text-[14px] text-pencil underline decoration-rule underline-offset-4 hover:text-ink">
                   Open entry
                 </Link>

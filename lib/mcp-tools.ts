@@ -36,8 +36,9 @@ const FIELD_HELP = {
   partOfSpeech: `One of: ${PARTS_OF_SPEECH.join(", ")}`,
   definition: "English definition. One sense per line when there are several.",
   chineseDefinition: "Traditional Chinese (台灣用語) definition. One sense per line, matching the English senses.",
-  example: "One natural English example sentence using the term.",
-  exampleZh: "Traditional Chinese translation of the example sentence.",
+  example:
+    "Natural English example sentences using the term: one per sense, one per line, in the same order as the definitions.",
+  exampleZh: "Traditional Chinese translations of the examples, one per line, in the same order.",
   note:
     "Usage notes in Traditional Chinese: common patterns/collocations, how it differs from similar words, " +
     "register, related forms, easy-to-confuse words. Several short points, one per line.",

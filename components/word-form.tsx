@@ -71,10 +71,10 @@ export function WordForm({
       <Field label="English definition" hint="One meaning per line" error={err("definition")}>
         <textarea name="definition" defaultValue={v("definition")} rows={2} className="field" />
       </Field>
-      <Field label="Example sentence" error={err("example")}>
+      <Field label="Example sentences" hint="One per meaning, one per line" error={err("example")}>
         <textarea name="example" defaultValue={v("example")} rows={2} className="field" />
       </Field>
-      <Field label="例句翻譯" error={err("exampleZh")}>
+      <Field label="例句翻譯" hint="Same order, one per line" error={err("exampleZh")}>
         <textarea name="exampleZh" defaultValue={v("exampleZh")} rows={2} className="field zh" />
       </Field>
       <Field label="筆記" hint="One point per line" error={err("note")}>

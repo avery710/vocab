@@ -40,6 +40,3 @@ Delete this file once the step below is done.
 
 - Change `sslmode=require` to `sslmode=verify-full` in `DATABASE_URL` (Vercel and
   `.env.local`) to silence `pg`'s SSL warning.
-- Vocab holds one example per entry, so the skill puts extra-sense examples in the
-  note as `例（第二義）…` lines. Making `example` / `exampleZh` one sentence per line
-  (like definitions) would give each sense its own example.

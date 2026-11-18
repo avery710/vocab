@@ -29,12 +29,48 @@ export function senses(text: string): string[] {
   return [t];
 }
 
-/** Notes: bullet points when written one per line, otherwise one paragraph. */
+/**
+ * Notes, one point per line. New notes are written one point per line; notes
+ * imported from Notion are one paragraph, so those split after each Chinese
+ * sentence end (。！？), never inside brackets or quotes.
+ */
 export function notePoints(text: string): string[] {
-  return text
+  const lines = text
     .split(/\n+/)
     .map((s) => s.replace(/^[-•]\s*/, "").trim())
     .filter(Boolean);
+  return lines.length === 1 ? sentences(lines[0]) : lines;
+}
+
+const OPEN = "（(「『“";
+const CLOSE = "）)」』”";
+
+function sentences(text: string): string[] {
+  const out: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (OPEN.includes(ch)) depth++;
+    else if (CLOSE.includes(ch)) depth = Math.max(0, depth - 1);
+    else if (depth === 0 && "。！？".includes(ch)) {
+      out.push(text.slice(start, i + 1).trim());
+      start = i + 1;
+    }
+  }
+  out.push(text.slice(start).trim());
+  return out.filter(Boolean);
+}
+
+/**
+ * Examples, one per line in sense order, paired with their translations by
+ * line. Imported Notion entries have a single example, so one pair.
+ */
+export function examples(en: string, zh: string): { en: string; zh: string }[] {
+  const lines = (t: string) => t.split(/\n+/).map((s) => s.trim()).filter(Boolean);
+  const a = lines(en);
+  const b = lines(zh);
+  return Array.from({ length: Math.max(a.length, b.length) }, (_, i) => ({ en: a[i] ?? "", zh: b[i] ?? "" }));
 }
 
 export function wordPath(term: string) {
