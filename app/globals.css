@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+ * Vocab — a personal bilingual word notebook.
+ * One bold thing: the highlighter. Headwords get a marker-yellow swipe the way
+ * you'd mark a new word in a textbook, and the active thumb-index letter is a
+ * yellow tab. Everything else is navy ink on cool paper, kept quiet.
+ */
+@theme {
+  --color-paper: #f3f5f2;
+  --color-sheet: #fbfcfa;
+  --color-ink: #18263a;
+  --color-pencil: #5b6b7f;
+  --color-faint: #8a97a6;
+  --color-rule: #dce1da;
+  --color-marker: #ffe45c;
+  --color-marker-soft: #fff3b0;
+  --color-danger: #b4372b;
+
+  --font-sans: "Schibsted Grotesk", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", "Noto Serif TC", ui-serif, Georgia, serif;
+  --font-ipa: "Noto Sans", "Charis SIL", "Doulos SIL", "Lucida Sans Unicode", sans-serif;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--color-marker);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* The highlighter: a slightly uneven marker stroke under the lower half. */
+.marked,
+a:hover .hover-mark {
+  background-image: linear-gradient(
+    100deg,
+    transparent 0.2em,
+    var(--color-marker) 0.25em,
+    var(--color-marker) calc(100% - 0.3em),
+    transparent calc(100% - 0.15em)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 0.42em;
+  background-position: 0 86%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+}
+
+.ipa {
+  font-family: var(--font-ipa);
+  letter-spacing: 0.01em;
+}
+
+/* Chinese reads better a touch looser. */
+.zh {
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+
+/* The highlighter swipe draws in once on a word page. */
+@media (prefers-reduced-motion: no-preference) {
+  .marked-draw {
+    animation: marker-draw 520ms cubic-bezier(0.2, 0.7, 0.2, 1) 120ms both;
+  }
+  @keyframes marker-draw {
+    from {
+      background-size: 0% 0.42em;
+    }
+    to {
+      background-size: 100% 0.42em;
+    }
+  }
+}
+
+.field {
+  width: 100%;
+  border: 1px solid var(--color-rule);
+  background: var(--color-sheet);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.field:focus {
+  outline: none;
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 3px var(--color-marker-soft);
+}
+textarea.field {
+  resize: vertical;
+}
