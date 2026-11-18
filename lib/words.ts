@@ -33,6 +33,10 @@ export interface Word {
   createdAt: string;
   updatedAt: string;
   related: RelatedRef[];
+  /** Review level (0 = new or last marked "Again"). */
+  reviewLevel: number;
+  /** Next review date (YYYY-MM-DD, Taiwan); null = never reviewed. */
+  reviewDue: string | null;
 }
 
 interface WordRow {
@@ -50,13 +54,15 @@ interface WordRow {
   created_at: Date;
   updated_at: Date;
   related: RelatedRef[] | null;
+  review_level: number;
+  review_due: string | null;
 }
 
 // date_added comes back as text (cast in SQL) so no timezone shifting happens.
 const SELECT = `
   select w.id, w.term, w.pronunciation, w.part_of_speech, w.definition, w.chinese_definition,
          w.example, w.example_zh, w.note, w.tags, w.date_added::text as date_added,
-         w.created_at, w.updated_at,
+         w.created_at, w.updated_at, w.review_level, w.review_due::text as review_due,
          (select coalesce(json_agg(json_build_object('id', r.id, 'term', r.term) order by r.term_key), '[]')
             from word_links l join words r on r.id = l.related_id
            where l.word_id = w.id) as related
@@ -78,6 +84,8 @@ function toWord(r: WordRow): Word {
     createdAt: r.created_at.toISOString(),
     updatedAt: r.updated_at.toISOString(),
     related: r.related ?? [],
+    reviewLevel: r.review_level,
+    reviewDue: r.review_due,
   };
 }
 
@@ -174,9 +182,14 @@ export async function searchWords(opts: SearchOptions = {}): Promise<SearchResul
   return { total: count[0].n, words: rows.map(toWord) };
 }
 
-export async function randomWords(n: number, filter: { tag?: string; partOfSpeech?: PartOfSpeech } = {}): Promise<Word[]> {
+/** Days until the next review after "Knew it", by the level reached. */
+export const REVIEW_INTERVALS = [1, 3, 7, 14, 30, 60];
+const TODAY = `(now() at time zone 'Asia/Taipei')::date`;
+
+type ReviewFilter = { tag?: string; partOfSpeech?: PartOfSpeech };
+
+function reviewWhere(filter: ReviewFilter, params: unknown[]): string[] {
   const where: string[] = [];
-  const params: unknown[] = [];
   if (filter.tag) {
     params.push(filter.tag.toLowerCase());
     where.push(`$${params.length} = any(w.tags)`);
@@ -185,11 +198,60 @@ export async function randomWords(n: number, filter: { tag?: string; partOfSpeec
     params.push(filter.partOfSpeech);
     where.push(`w.part_of_speech = $${params.length}`);
   }
+  return where;
+}
+
+/**
+ * Words to review now: those due (oldest due date first), then ones never
+ * reviewed, shuffled. Words not yet due never come up, so a word you just
+ * marked doesn't reappear until its date.
+ */
+export async function reviewWords(n: number, filter: ReviewFilter = {}): Promise<Word[]> {
+  const params: unknown[] = [];
+  const where = [...reviewWhere(filter, params), `(w.review_due is null or w.review_due <= ${TODAY})`];
   const rows = await query<WordRow>(
-    `${SELECT} ${where.length ? "where " + where.join(" and ") : ""} order by random() limit ${Math.min(Math.max(n, 1), 50)}`,
+    `${SELECT} where ${where.join(" and ")}
+      order by (w.review_due is null), w.review_due, random()
+      limit ${Math.min(Math.max(n, 1), 50)}`,
     params
   );
   return rows.map(toWord);
+}
+
+export interface ReviewCounts {
+  due: number;
+  new: number;
+  /** Soonest date anything comes due after today. */
+  nextDue: string | null;
+}
+
+export async function reviewCounts(filter: ReviewFilter = {}): Promise<ReviewCounts> {
+  const params: unknown[] = [];
+  const where = reviewWhere(filter, params);
+  const [r] = await query<{ due: number; new: number; next_due: string | null }>(
+    `select count(*) filter (where w.review_due <= ${TODAY})::int as due,
+            count(*) filter (where w.review_due is null)::int as new,
+            (min(w.review_due) filter (where w.review_due > ${TODAY}))::text as next_due
+       from words w ${where.length ? "where " + where.join(" and ") : ""}`,
+    params
+  );
+  return { due: r.due, new: r.new, nextDue: r.next_due };
+}
+
+/** Record one review. Returns the new level and due date, or null if the word is gone. */
+export async function recordReview(id: string, knew: boolean): Promise<{ reviewLevel: number; reviewDue: string } | null> {
+  if (!UUID.test(id)) return null;
+  const max = REVIEW_INTERVALS.length;
+  const rows = await query<{ review_level: number; review_due: string }>(
+    `update words set
+        review_level = case when $2 then least(review_level + 1, ${max}) else 0 end,
+        review_due = ${TODAY} + case when $2 then ($3::int[])[least(review_level + 1, ${max})] else 1 end,
+        last_reviewed_at = now()
+      where id = $1
+      returning review_level, review_due::text`,
+    [id, knew, REVIEW_INTERVALS]
+  );
+  return rows[0] ? { reviewLevel: rows[0].review_level, reviewDue: rows[0].review_due } : null;
 }
 
 export interface Overview {

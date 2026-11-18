@@ -17,7 +17,9 @@ import {
   deleteWord,
   findWord,
   overview,
-  randomWords,
+  recordReview,
+  REVIEW_INTERVALS,
+  reviewWords,
   searchWords,
   updateWord,
   type Word,
@@ -155,7 +157,9 @@ export function registerVocabTools(server: McpServer, auth: TokenAuth, origin: s
     {
       title: "Pick words to review",
       description:
-        "A random sample of saved entries, for quizzing or flashcard-style review. Optionally only one tag or part of speech.",
+        "Entries to quiz the user on now, the same spaced-repetition queue as the site's Review page: words due for review first, " +
+        "then never-reviewed ones. Words not yet due are left out, so recently reviewed words don't come back too soon. " +
+        "After each answer, call record_review so the word is scheduled. Optionally only one tag or part of speech.",
       inputSchema: z.object({
         count: z.number().int().min(1).max(20).optional().describe("Default 5"),
         tag: z.string().optional(),
@@ -164,7 +168,7 @@ export function registerVocabTools(server: McpServer, auth: TokenAuth, origin: s
       annotations: { readOnlyHint: true },
     },
     async ({ count, tag, partOfSpeech }) => {
-      const words = await randomWords(count ?? 5, { tag, partOfSpeech });
+      const words = await reviewWords(count ?? 5, { tag, partOfSpeech });
       return json({ words: words.map((w) => present(w, origin)) });
     }
   );
@@ -250,6 +254,30 @@ export function registerVocabTools(server: McpServer, auth: TokenAuth, origin: s
       const w = await findWord(id);
       if (!w) return error(`"${id}" is not in the dictionary.`);
       return writeResult(await updateWord(w.id, patch), origin, "updated");
+    }
+  );
+
+  server.registerTool(
+    "record_review",
+    {
+      title: "Record a review",
+      description:
+        "After quizzing the user on a word, record how it went. knew=true (\"Knew it\") moves the word to its next, longer interval " +
+        `(${REVIEW_INTERVALS.join(", ")} days); knew=false (\"Again\") brings it back tomorrow. One call per word answered.`,
+      inputSchema: z.object({
+        id: z.string().describe("Entry id or term"),
+        knew: z.boolean().describe("true if the user recalled it, false if they missed it"),
+      }),
+      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false },
+    },
+    async ({ id, knew }) => {
+      const limited = writeLimited();
+      if (limited) return limited;
+      const w = await findWord(id);
+      if (!w) return error(`"${id}" is not in the dictionary.`);
+      const r = await recordReview(w.id, knew);
+      if (!r) return error(`"${id}" is not in the dictionary.`);
+      return json({ term: w.term, ...r });
     }
   );
 

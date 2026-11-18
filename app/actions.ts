@@ -6,7 +6,7 @@ import { requireOwner, signIn, signOut } from "@/auth";
 import { wordPath } from "@/lib/format";
 import { revokeApp } from "@/lib/token-auth";
 import { newWordSchema } from "@/lib/word-input";
-import { createWord, deleteWord, updateWord } from "@/lib/words";
+import { createWord, deleteWord, recordReview, updateWord } from "@/lib/words";
 
 export interface FormState {
   error?: string;
@@ -100,4 +100,10 @@ export async function googleSignIn(callbackUrl?: string) {
 
 export async function signOutAction() {
   await signOut({ redirectTo: "/signin" });
+}
+
+/** One flashcard graded on /review: "Knew it" (true) or "Again" (false). */
+export async function recordReviewAction(id: string, knew: boolean): Promise<void> {
+  await requireOwner();
+  await recordReview(id, knew === true);
 }

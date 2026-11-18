@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { ReviewDeck } from "@/components/review-deck";
 import { TopBar } from "@/components/top-bar";
-import { overview, randomWords } from "@/lib/words";
+import { overview, reviewCounts, reviewWords } from "@/lib/words";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Review" };
 
 export default async function ReviewPage({ searchParams }: { searchParams: Promise<{ tag?: string }> }) {
   const { tag } = await searchParams;
-  const [words, stats] = await Promise.all([randomWords(15, { tag }), overview()]);
+  const [words, counts, stats] = await Promise.all([reviewWords(15, { tag }), reviewCounts({ tag }), overview()]);
   return (
     <>
       <TopBar current="/review" />
@@ -32,7 +32,7 @@ export default async function ReviewPage({ searchParams }: { searchParams: Promi
             </div>
           )}
         </div>
-        <ReviewDeck key={words.map((w) => w.id).join()} words={words} />
+        <ReviewDeck key={words.map((w) => w.id).join()} words={words} counts={counts} />
       </main>
     </>
   );

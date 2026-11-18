@@ -26,6 +26,13 @@ create unique index if not exists words_term_key on words (term_key);
 create index if not exists words_date_added on words (date_added desc, created_at desc);
 create index if not exists words_tags on words using gin (tags);
 
+-- Review (light spaced repetition). review_due null = never reviewed.
+-- "Knew it" moves a word up a level and further out (1, 3, 7, 14, 30, 60 days);
+-- "Again" drops it to level 0, due tomorrow. Dates are Taiwan dates.
+alter table words add column if not exists review_level int not null default 0;
+alter table words add column if not exists review_due date;
+alter table words add column if not exists last_reviewed_at timestamptz;
+
 -- "Related words" — stored in both directions so a lookup is one WHERE.
 create table if not exists word_links (
   word_id uuid not null references words (id) on delete cascade,

@@ -91,7 +91,7 @@ describe("MCP over OAuth", () => {
     const list = await rpc(access_token, "tools/list");
     const names = list.body.result.tools.map((t: { name: string }) => t.name);
     expect(names).toEqual([
-      "search_words", "get_word", "review_words", "dictionary_overview", "add_word", "update_word", "delete_word",
+      "search_words", "get_word", "review_words", "dictionary_overview", "add_word", "update_word", "record_review", "delete_word",
     ]);
 
     const added = await call(access_token, "add_word", {

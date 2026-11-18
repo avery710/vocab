@@ -44,6 +44,11 @@ and the address in `claude-skill/english-dictionary/SKILL.md`.
 - Examples: one per sense, one per line, in definition order; line *n* of
   `example_zh` translates line *n* of `example` (`lib/format.ts#examples`). The
   word page numbers them when there are several.
+- Review is light spaced repetition, shared by `/review` and the connector's
+  `review_words` / `record_review`. "Knew it" moves a word up a level, due in 1, 3,
+  7, 14, 30, then 60 days (`REVIEW_INTERVALS`); "Again" resets it, due tomorrow.
+  Sets show due words first, then never-reviewed ones; words not yet due never
+  come up. Due dates are Taiwan dates (`review_due`, null = never reviewed).
 - Notes: one point per line, each shown on its own line (no bullet markers).
   Imported Notion notes are one paragraph; `notePoints` splits those after each
   。！？ outside brackets and quotes, on display only (stored text unchanged).

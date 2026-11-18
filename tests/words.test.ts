@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { newWordSchema } from "@/lib/word-input";
-import { createWord, deleteWord, getWordByTerm, overview, randomWords, searchWords, updateWord } from "@/lib/words";
+import { createWord, deleteWord, getWordByTerm, overview, recordReview, reviewCounts, reviewWords, searchWords, updateWord } from "@/lib/words";
 
 async function add(term: string, extra: Record<string, unknown> = {}) {
   const r = await createWord(newWordSchema.parse({ term, ...extra }));
@@ -89,7 +89,7 @@ describe("words", () => {
     expect((await searchWords({})).words[0].term).toBe("'tis");
   });
 
-  it("gives an overview and random samples; deletes", async () => {
+  it("gives an overview and review samples; deletes", async () => {
     const a = await add("one", { tags: ["casual"] });
     await add("two", { tags: ["casual", "slang"] });
     const o = await overview();
@@ -98,8 +98,31 @@ describe("words", () => {
       { tag: "casual", count: 2 },
       { tag: "slang", count: 1 },
     ]);
-    expect((await randomWords(5, { tag: "slang" })).map((w) => w.term)).toEqual(["two"]);
+    expect((await reviewWords(5, { tag: "slang" })).map((w) => w.term)).toEqual(["two"]);
     expect(await deleteWord(a.word.id)).toBe(true);
     expect(await deleteWord(a.word.id)).toBe(false);
+  });
+
+  it("schedules reviews: due first, then new; Knew it spaces out, Again is tomorrow", async () => {
+    const a = (await add("one")).word;
+    const b = (await add("two")).word;
+    await add("three");
+    expect((await reviewCounts()).new).toBe(3);
+
+    const knew = await recordReview(a.id, true);
+    expect(knew?.reviewLevel).toBe(1);
+    const again = await recordReview(b.id, false);
+    expect(again?.reviewLevel).toBe(0);
+    // Both are now due tomorrow or later, so only "three" is left today.
+    expect((await reviewWords(10)).map((w) => w.term)).toEqual(["three"]);
+    const c = await reviewCounts();
+    expect(c).toMatchObject({ due: 0, new: 1 });
+    expect(c.nextDue).toBe(again?.reviewDue);
+
+    // Knew it again climbs: level 2 is 3 days out, later than level 1.
+    const second = await recordReview(a.id, true);
+    expect(second?.reviewLevel).toBe(2);
+    expect(second!.reviewDue > knew!.reviewDue).toBe(true);
+    expect(await recordReview("not-an-id", true)).toBeNull();
   });
 });
