@@ -50,7 +50,7 @@ export function SearchBox({ initial }: { initial: string }) {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search English or 中文"
         aria-label="Search your words"
-        className="h-13 w-full rounded-2xl border border-rule bg-sheet pr-12 pl-12 text-[17px] placeholder:text-faint focus:border-ink focus:shadow-[0_0_0_4px_var(--color-marker-soft)] focus:outline-none"
+        className="h-13 w-full rounded-2xl border border-rule bg-sheet pr-12 pl-12 text-[17px] placeholder:text-faint focus:border-marker focus:shadow-[0_0_0_1px_var(--color-marker)] focus:outline-none"
       />
       <kbd className="absolute top-1/2 right-4 hidden -translate-y-1/2 rounded-md border border-rule px-1.5 text-[12px] text-faint sm:block">
         {pending ? "…" : "/"}

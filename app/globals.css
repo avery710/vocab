@@ -41,10 +41,15 @@ body {
   color: var(--color-ink);
 }
 
-:focus-visible {
-  outline: 2px solid var(--color-ink);
-  outline-offset: 2px;
-  border-radius: 4px;
+/* In the base layer so a component's own focus style (e.g. the search box's
+   `focus:outline-none` + green ring) can override it. Unlayered, it would beat
+   every Tailwind utility and draw a second outline. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 }
 
 /* The highlighter: a slightly uneven marker stroke under the lower half. */
@@ -104,8 +109,9 @@ a:hover .hover-mark {
 }
 .field:focus {
   outline: none;
+  /* One navy line, 2px: the 1px border plus a 1px ring right on top of it. */
   border-color: var(--color-ink);
-  box-shadow: 0 0 0 3px var(--color-marker-soft);
+  box-shadow: 0 0 0 1px var(--color-ink);
 }
 textarea.field {
   resize: vertical;
