@@ -103,11 +103,13 @@ export function ReviewDeck({ words, counts }: { words: Word[]; counts: ReviewCou
         <div className="mt-4 flex min-h-[360px] flex-col rounded-3xl border border-rule bg-sheet p-7 sm:p-10">
           <div className="flex-1">
             {dir === "en" || shown ? (
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-[clamp(36px,8vw,56px)] leading-tight font-bold tracking-[-0.02em]">
+              // Inline, so align-middle centers the button on the word's x-height
+              // (and it follows the last line when a phrase wraps).
+              <div className="text-[clamp(36px,8vw,56px)] leading-tight">
+                <h2 className="inline font-bold tracking-[-0.02em]">
                   <span className={shown ? "marked marked-draw" : ""}>{w.term}</span>
                 </h2>
-                <SpeakButton text={w.term} />
+                <SpeakButton text={w.term} className="ml-3 align-middle" />
               </div>
             ) : null}
             {dir === "zh" && !shown && <p className="zh text-[24px]">{senses(w.chineseDefinition).join("；") || w.definition}</p>}
