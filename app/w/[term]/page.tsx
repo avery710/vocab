@@ -31,7 +31,10 @@ export default async function WordPage({ params }: Props) {
       <TopBar />
       <main className="mx-auto w-full max-w-3xl px-5 pb-24 sm:px-8">
         <div className="mt-6 flex items-center justify-between text-[14px]">
-          <Link href="/" className="text-pencil hover:text-ink">
+          <Link href="/" className="-ml-1 inline-flex items-center gap-0.5 text-pencil hover:text-ink">
+            <svg aria-hidden viewBox="0 0 24 24" className="size-[18px]">
+              <path d="M14.5 6 8.5 12l6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
             All words
           </Link>
           <Link href={`${wordPath(w.term)}/edit`} className="rounded-full border border-rule bg-sheet px-3.5 py-1.5 hover:border-ink">
