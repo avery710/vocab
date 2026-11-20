@@ -64,7 +64,7 @@ Fill these fields on `add_word`:
 |---|---|
 | `term` | the word or phrase, lowercase unless a proper noun |
 | `pronunciation` | IPA in slashes, British English. Mention the American variant in the note when it differs meaningfully. |
-| `partOfSpeech` | noun, verb, adjective, adverb, phrase, idiom, other |
+| `partOfSpeech` | noun, verb, adjective, adverb, phrase, idiom, other; the first sense's when there are several |
 | `chineseDefinition` | traditional Chinese, **one sense per line** |
 | `definition` | English, **one sense per line**, in the same order as the Chinese |
 | `example` | natural sentences, **one per sense, one per line**, in the same order as the definitions |
@@ -74,6 +74,8 @@ Fill these fields on `add_word`:
 | `related` | terms already in the dictionary to link (see Step 2) |
 
 Leave `dateAdded` out; it defaults to today in Taiwan.
+
+**A word used as more than one part of speech** (*heterosexual* adj./n., *flex* v./n.): start each definition line with its part of speech in brackets, （形容詞）/（名詞）/（動詞）/（副詞） in `chineseDefinition` and (adjective)/(noun)/(verb)/(adverb) in `definition`, and set `partOfSpeech` to the first sense's. The site reads these markers to list every part of speech under the word ("adjective · noun"). Words with a single part of speech don't need the markers.
 
 **Every sense gets its own example.** Each definition line must have a matching example sentence with its Chinese translation; an entry with a sense that has no example is incomplete. Line *n* of `example` and line *n* of `exampleZh` belong to sense *n*, so the three fields always have the same number of lines; the site numbers them to match. Each sentence should make its own sense unmistakable rather than restate another sense's use. If you can't write a natural example for a sense, that sense is probably too marginal to list; drop it rather than leave it without an example.
 

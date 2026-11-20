@@ -36,8 +36,12 @@ const POS = z.enum(PARTS_OF_SPEECH);
 const FIELD_HELP = {
   pronunciation: "IPA between slashes, e.g. /æpt/",
   partOfSpeech: `One of: ${PARTS_OF_SPEECH.join(", ")}`,
-  definition: "English definition. One sense per line when there are several.",
-  chineseDefinition: "Traditional Chinese (台灣用語) definition. One sense per line, matching the English senses.",
+  definition:
+    "English definition. One sense per line when there are several. " +
+    "If the senses span parts of speech, start each line with its own: (adjective), (noun), (verb), (adverb).",
+  chineseDefinition:
+    "Traditional Chinese (台灣用語) definition. One sense per line, matching the English senses. " +
+    "If the senses span parts of speech, start each line with its own: （形容詞）, （名詞）, （動詞）, （副詞）.",
   example:
     "Natural English example sentences using the term: one per sense, one per line, in the same order as the definitions.",
   exampleZh: "Traditional Chinese translations of the examples, one per line, in the same order.",

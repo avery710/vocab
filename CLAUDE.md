@@ -41,9 +41,17 @@ and the address in `claude-skill/english-dictionary/SKILL.md`.
   `termSchema`). The Notion import is exempt so old entries come over as they were.
 - Definitions: one sense per line. Imported Notion entries join senses with "；" or
   "; "; `lib/format.ts#senses` splits both.
+- Part of speech: `part_of_speech` holds one (the main one). A word used as
+  several marks each sense, "（形容詞）異性戀的 / （名詞）異性戀者";
+  `lib/format.ts#partsOfSpeech` reads those markers (Chinese first, English as a
+  fallback) and lists them all under the word, on display only. Phrases and
+  idioms keep their one.
 - Examples: one per sense, one per line, in definition order; line *n* of
   `example_zh` translates line *n* of `example` (`lib/format.ts#examples`). The
-  word page numbers them when there are several.
+  word page numbers them when there are several, and the term is marked in the
+  green highlighter inside each sentence (`markTerm`: inflections, irregular
+  verbs, sb/sth placeholders, an optional leading "be"; all 336 examples matched
+  on 2026-11-20).
 - Review is light spaced repetition, shared by `/review` and the connector's
   `review_words` / `record_review`. "Knew it" moves a word up a level, due in 1, 3,
   7, 14, 30, then 60 days (`REVIEW_INTERVALS`); "Again" resets it, due tomorrow.

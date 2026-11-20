@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { recordReviewAction } from "@/app/actions";
-import { examples, senses, shortDate, wordPath } from "@/lib/format";
+import { examples, partsOfSpeech, senses, shortDate, wordPath } from "@/lib/format";
 import type { ReviewCounts, Word } from "@/lib/words";
+import { MarkedSentence } from "./marked-sentence";
 import { SpeakButton } from "./speak-button";
 
 type Direction = "en" | "zh";
@@ -22,6 +23,7 @@ export function ReviewDeck({ words, counts }: { words: Word[]; counts: ReviewCou
   const [failed, setFailed] = useState(false);
   const w = words[i];
   const done = i >= words.length;
+  const pos = w ? partsOfSpeech(w).join(" · ") : "";
 
   const grade = useCallback(
     (knew: boolean) => {
@@ -117,13 +119,15 @@ export function ReviewDeck({ words, counts }: { words: Word[]; counts: ReviewCou
             {shown && (
               <div className="mt-5 grid gap-3">
                 <p className="flex flex-wrap gap-x-3 text-[15px] text-pencil">
-                  {w.partOfSpeech && <span>{w.partOfSpeech}</span>}
+                  {pos && <span>{pos}</span>}
                   {w.pronunciation && <span className="ipa">{w.pronunciation}</span>}
                 </p>
                 {w.chineseDefinition && <p className="zh text-[19px]">{senses(w.chineseDefinition).join("；")}</p>}
                 {w.definition && <p className="text-[17px] text-ink/80">{w.definition}</p>}
                 {examples(w.example, "").map((e, i) => (
-                  <p key={i} className="mt-2 border-l-[3px] border-marker pl-3 text-[17px]">{e.en}</p>
+                  <p key={i} className="mt-2 border-l-[3px] border-marker pl-3 text-[17px]">
+                    <MarkedSentence text={e.en} term={w.term} />
+                  </p>
                 ))}
                 <Link href={wordPath(w.term)} className="mt-1 text-[14px] text-pencil underline decoration-rule underline-offset-4 hover:text-ink">
                   Open entry

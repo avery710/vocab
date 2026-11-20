@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deleteWordAction } from "@/app/actions";
 import { ConfirmDelete } from "@/components/confirm-delete";
+import { MarkedSentence } from "@/components/marked-sentence";
 import { SpeakButton } from "@/components/speak-button";
 import { TopBar } from "@/components/top-bar";
-import { examples, notePoints, safeDecode, senses, shortDate, wordPath } from "@/lib/format";
+import { examples, notePoints, partsOfSpeech, safeDecode, senses, shortDate, wordPath } from "@/lib/format";
 import { getWordByTerm } from "@/lib/words";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,7 @@ export default async function WordPage({ params }: Props) {
   const en = senses(w.definition);
   const ex = examples(w.example, w.exampleZh);
   const notes = notePoints(w.note);
+  const pos = partsOfSpeech(w);
 
   return (
     <>
@@ -47,7 +49,7 @@ export default async function WordPage({ params }: Props) {
             <span className="marked marked-draw">{w.term}</span>
           </h1>
           <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-            {w.partOfSpeech && <span className="text-[19px] text-pencil">{w.partOfSpeech}</span>}
+            {pos.length > 0 && <span className="text-[19px] text-pencil">{pos.join(" · ")}</span>}
             {w.pronunciation && <span className="ipa text-[18px] text-ink/80">{w.pronunciation}</span>}
             <SpeakButton text={w.term} />
           </div>
@@ -72,7 +74,11 @@ export default async function WordPage({ params }: Props) {
                         <span className="w-4 shrink-0 pt-[0.3em] text-right text-[14px] text-faint tabular-nums">{i + 1}</span>
                       )}
                       <figure className="border-l-[3px] border-marker pl-4">
-                        {e.en && <p className="text-[19px] leading-relaxed">{e.en}</p>}
+                        {e.en && (
+                          <p className="text-[19px] leading-relaxed">
+                            <MarkedSentence text={e.en} term={w.term} />
+                          </p>
+                        )}
                         {e.zh && <p className="zh mt-1 text-[15.5px] text-pencil">{e.zh}</p>}
                       </figure>
                     </li>

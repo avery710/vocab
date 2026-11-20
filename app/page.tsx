@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { SearchBox } from "@/components/search-box";
 import { TopBar } from "@/components/top-bar";
-import { LETTERS, POS_SHORT, senses, shortDate, wordPath } from "@/lib/format";
+import { LETTERS, POS_SHORT, partsOfSpeech, senses, shortDate, wordPath } from "@/lib/format";
 import { PARTS_OF_SPEECH, type PartOfSpeech } from "@/lib/word-input";
 import { overview, searchWords, type SortOrder } from "@/lib/words";
 
@@ -134,6 +134,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
           <ol className="mt-6">
             {result.words.map((w) => {
               const zh = senses(w.chineseDefinition).join("；");
+              const pos = partsOfSpeech(w).map((p) => POS_SHORT[p]).filter(Boolean).join(" · ");
               return (
                 <li key={w.id} className="border-t border-rule first:border-t-0">
                   <Link href={wordPath(w.term)} className="group -mx-3 flex gap-4 rounded-xl px-3 py-3.5 transition-colors hover:bg-sheet">
@@ -142,9 +143,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
                         <span className="text-[21px] leading-tight font-bold tracking-[-0.02em]">
                           <span className="hover-mark">{w.term}</span>
                         </span>
-                        {w.partOfSpeech && POS_SHORT[w.partOfSpeech] && (
-                          <span className="text-[15px] text-pencil">{POS_SHORT[w.partOfSpeech]}</span>
-                        )}
+                        {pos && <span className="text-[15px] text-pencil">{pos}</span>}
                         {w.pronunciation && <span className="ipa text-[14px] text-faint">{w.pronunciation}</span>}
                       </div>
                       {zh && <p className="zh mt-0.5 line-clamp-2 text-[15px] text-ink/85">{zh}</p>}
